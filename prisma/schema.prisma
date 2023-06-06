@@ -1,0 +1,30 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model games {
+  id            Int            @id @default(autoincrement())
+  name          String?        @db.VarChar(50)
+  genre_id      Int?
+  nacional_id   Int?
+  release_date  DateTime?      @db.Date
+  genre_games   genre_games?   @relation(fields: [genre_id], references: [genre_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_genre")
+  nacional_game nacional_game? @relation(fields: [nacional_id], references: [nacional_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_nacional")
+}
+
+model genre_games {
+  genre_id Int     @id @default(autoincrement())
+  name     String? @db.VarChar(50)
+  games    games[]
+}
+
+model nacional_game {
+  nacional_id Int     @id @default(autoincrement())
+  name        String? @db.VarChar(50)
+  games       games[]
+}
