@@ -7,24 +7,24 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model games {
+model Game {
   id            Int            @id @default(autoincrement())
   name          String?        @db.VarChar(50)
   genre_id      Int?
   nacional_id   Int?
   release_date  DateTime?      @db.Date
-  genre_games   genre_games?   @relation(fields: [genre_id], references: [genre_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_genre")
-  nacional_game nacional_game? @relation(fields: [nacional_id], references: [nacional_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_nacional")
+  genre_games   Genres?   @relation(fields: [genre_id], references: [genre_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_genre")
+  nacional_game Nacionality? @relation(fields: [nacional_id], references: [nacional_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_nacional")
 }
 
-model genre_games {
+model Genres {
   genre_id Int     @id @default(autoincrement())
   name     String? @db.VarChar(50)
-  games    games[]
+  games    Game[]
 }
 
-model nacional_game {
+model Nacionality {
   nacional_id Int     @id @default(autoincrement())
   name        String? @db.VarChar(50)
-  games       games[]
+  games       Game[]
 }
