@@ -36,10 +36,10 @@ app.post("/games", async (req, res)=> {
         })
 
         if(sameNameGame){
-            res.status(409).send({message: "Ja existe um filme com esse nome"})
+            return res.status(409).send({message: "Ja existe um filme com esse nome"})
         }
 
-        await prisma.games.create({
+        const newGame = await prisma.games.create({
             data: { 
                 name,
                 genre_id,
@@ -47,11 +47,11 @@ app.post("/games", async (req, res)=> {
                 release_date: new Date(release_date)
             }
         })
+        res.json(newGame)
+
     }catch(error){
         return res.status(500).send({message: "Ocorreu um erro inesperado"})
     }
-
-    res.status(201).send()
 })
 
 //atualizar um jogo no banco
@@ -61,6 +61,9 @@ app.put("/games", async (req, res)=> {
             id: 1
         }
     })
+
+    
+
     res.status(200).send(namegame)
 })
 
